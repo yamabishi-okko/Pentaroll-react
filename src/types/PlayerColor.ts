@@ -1,0 +1,1 @@
+export type PlayerColor = 'black' | 'white'
