@@ -12,7 +12,14 @@ interface BoardProps {
 }
 
 const Board: React.FC<BoardProps> = ({ size, board, onPlace }) => {
-  // グリッドの列数を size に合わせるスタイル
+  // その行が満杯か？
+  const isRowFull = (r: number) => board[r].every(cell => cell !== null)
+  // その列が満杯か？
+  const isColFull = (c: number) => board.every(rowArr => rowArr[c] !== null)
+  // 外周セルかどうか
+  const isEdge = (r: number, c: number) =>
+    r === 0 || c === 0 || r === size - 1 || c === size - 1
+
   const gridStyle: React.CSSProperties = {
     display: 'grid',
     gridTemplateColumns: `repeat(${size}, 40px)`,
@@ -21,23 +28,27 @@ const Board: React.FC<BoardProps> = ({ size, board, onPlace }) => {
     marginTop: '20px',
   }
 
-  // 外周だけクリック可能にする判定
-  const isEdge = (r: number, c: number) =>
-    r === 0 || c === 0 || r === size - 1 || c === size - 1
-
   return (
     <div style={gridStyle}>
       {board.map((rowArr, r) =>
-        rowArr.map((cellValue, c) => (
-          <Cell
-            key={`${r}-${c}`}
-            value={cellValue}
-            isEdge={isEdge(r, c)}
-            onClick={() => {
-              if (isEdge(r, c)) onPlace(r, c)
-            }}
-          />
-        ))
+        rowArr.map((cellValue, c) => {
+          const edge = isEdge(r, c)
+          const fullLine = isRowFull(r) || isColFull(c)
+          // 外周かつ行・列が満杯でないセルのみクリック可能
+          const clickable = edge && !fullLine
+
+          return (
+            <Cell
+              key={`${r}-${c}`}
+              value={cellValue}
+              isEdge={edge}
+              onClick={() => {
+                if (clickable) onPlace(r, c)
+              }}
+              disabled={!clickable}
+            />
+          )
+        })
       )}
     </div>
   )
