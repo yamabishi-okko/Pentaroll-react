@@ -6,18 +6,32 @@ interface CellProps {
   value: CellValue
   isEdge: boolean
   onClick: () => void
+  disabled?: boolean
 }
 
-const Cell: React.FC<CellProps> = ({ value, isEdge, onClick }) => {
+const Cell: React.FC<CellProps> = ({
+  value,
+  isEdge,
+  onClick,
+  disabled = false,     // ← ここで受け取る＆デフォルト false
+}) => {
   const cellStyle: React.CSSProperties = {
     width: '40px',
     height: '40px',
     border: '1px solid #333',
-    backgroundColor: isEdge ? '#fafafa' : '#eaeaea',
+    backgroundColor:  disabled
+      ? '#ddd'
+      : isEdge
+      ? '#fafafa'
+      : '#eaeaea',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    cursor: isEdge ? 'pointer' : 'default',
+    cursor: disabled
+      ? 'not-allowed'
+      : isEdge
+      ? 'pointer'
+      : 'default',
   }
 
   const ballStyle: React.CSSProperties = {
@@ -29,7 +43,10 @@ const Cell: React.FC<CellProps> = ({ value, isEdge, onClick }) => {
   }
 
   return (
-    <div style={cellStyle} onClick={onClick}>
+    <div
+      style={cellStyle}
+      onClick={disabled ? undefined : onClick}  // 無効時はクリックを受け付けない
+    >
       {value && <div style={ballStyle} />}
     </div>
   )
