@@ -18,6 +18,9 @@ const App: React.FC = () => {
   const [showModal, setShowModal] = useState(false)
   // モーダルから返ってきた押し込む角の座標を一時保持
   const [pendingPos, setPendingPos] = useState<{ r: number; c: number } | null>(null)
+  // どちらに押し込めるかを保持
+  const [canVertical, setCanVertical] = useState(true)
+  const [canHorizontal, setCanHorizontal] = useState(true)
 
   const placeBall = (
     row: number,
@@ -45,7 +48,15 @@ const App: React.FC = () => {
       (col === 0 || col === BOARD_SIZE - 1)
 
     if (isCorner) {
-      // 角ならモーダルを起動して「縦 or 横」を選んでもらう
+      // 角セルが空なら押し出し不要 → そのまま配置して終了
+      if (board[row][col] === null) {
+        const dir = getPushDirection(row, col, BOARD_SIZE)
+        placeBall(row, col, dir)
+        return
+      }
+      // 既存ボールを押し出す場合のみモーダル表示
+      setCanVertical(!board.every(rArr => rArr[col] !== null))
+      setCanHorizontal(!board[row].every(cell => cell !== null))
       setPendingPos({ r: row, c: col })
       setShowModal(true)
       return
@@ -88,6 +99,8 @@ const App: React.FC = () => {
         <DirectionModal
           onChoose={handleModalChoose}
           onCancel={handleModalCancel}
+          canVertical={canVertical}
+          canHorizontal={canHorizontal}
         />
       )}
     </div>

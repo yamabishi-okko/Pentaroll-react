@@ -19,6 +19,10 @@ const Board: React.FC<BoardProps> = ({ size, board, onPlace }) => {
   // 外周セルかどうか
   const isEdge = (r: number, c: number) =>
     r === 0 || c === 0 || r === size - 1 || c === size - 1
+   // 四隅かどうか
+  const isCorner = (r: number, c: number) =>
+    (r === 0 || r === size - 1) && (c === 0 || c === size - 1)
+
 
   const gridStyle: React.CSSProperties = {
     display: 'grid',
@@ -33,10 +37,26 @@ const Board: React.FC<BoardProps> = ({ size, board, onPlace }) => {
       {board.map((rowArr, r) =>
         rowArr.map((cellValue, c) => {
           const edge = isEdge(r, c)
-          const fullLine = isRowFull(r) || isColFull(c)
-          // 外周かつ行・列が満杯でないセルのみクリック可能
-          const clickable = edge && !fullLine
 
+          // デフォルトはクリック不可
+          let clickable = false
+
+          if (edge) {
+            const topOrBottom = r === 0 || r === size - 1
+            const leftOrRight = c === 0 || c === size - 1
+
+            if (isCorner(r, c)) {
+              // 四隅：行 or 列のどちらかに空きがあればOK
+              clickable = !isRowFull(r) || !isColFull(c)
+            } else if (topOrBottom) {
+              // 上端/下端：縦方向に押し出す → 列に空きがあればOK
+              clickable = !isColFull(c)
+            } else if (leftOrRight) {
+              // 左端/右端：横方向に押し出す → 行に空きがあればOK
+              clickable = !isRowFull(r)
+            }
+          }
+          
           return (
             <Cell
               key={`${r}-${c}`}
