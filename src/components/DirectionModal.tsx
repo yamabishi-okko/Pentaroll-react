@@ -4,11 +4,15 @@ import React from 'react'
 interface DirectionModalProps {
   onChoose: (isVertical: boolean) => void
   onCancel: () => void 
+  canVertical: boolean
+  canHorizontal: boolean
 }
 
 const DirectionModal: React.FC<DirectionModalProps> = ({
     onChoose,
-    onCancel
+    onCancel,
+    canVertical,
+    canHorizontal
 }) => {
   const backdropStyle: React.CSSProperties = {
     position: 'fixed',
@@ -64,15 +68,19 @@ const DirectionModal: React.FC<DirectionModalProps> = ({
         <p style={{ margin: '24px 0' }}>
         🌙どちらにボールを押し込みますか⭐️？
         </p>
+
         <button
           style={btnStyle}
-          onClick={() => onChoose(true)}
+          onClick={() => canVertical && onChoose(true)}
+          disabled={!canVertical}
         >
           縦側
         </button>
+
         <button
           style={btnStyle}
-          onClick={() => onChoose(false)}
+          onClick={() => canHorizontal && onChoose(false)}
+          disabled={!canHorizontal}
         >
           横側
         </button>
