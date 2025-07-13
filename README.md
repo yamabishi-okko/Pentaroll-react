@@ -7,7 +7,7 @@ https://youtu.be/B47Ptdt7M9M?si=KEYjF2hCA2DH73BX&t=70
 盤面の端からボールを押しこんで入れてずらしていく<br>
 すでにボールがある箇所にも押し込んで入れることができる（6個あるときは押しこみ不可）
 
-#　使用技術
+# 🧸使用技術
 >フロントエンドフレームワーク<br>
 ・React + Vite<br>
 フロントエンド言語<br>
@@ -27,6 +27,6 @@ https://youtu.be/B47Ptdt7M9M?si=KEYjF2hCA2DH73BX&t=70
 統一しましょう。そうしましょう。
 
 
-# 起動方法
+# ⚓️起動方法
 >npn run dev<br>
 http://localhost:5173/<br>
