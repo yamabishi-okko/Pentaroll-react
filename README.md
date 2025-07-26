@@ -28,5 +28,5 @@ https://youtu.be/B47Ptdt7M9M?si=KEYjF2hCA2DH73BX&t=70
 
 
 # ⚓️起動方法
->npn run dev<br>
+>npm run dev<br>
 http://localhost:5173/<br>
