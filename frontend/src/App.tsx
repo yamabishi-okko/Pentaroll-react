@@ -1,11 +1,13 @@
 // src/App.tsx
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Board from './components/Board'
 import type { BoardState } from './types/BoardState'
 import { createEmptyBoard } from './types/BoardState'
 import type { PlayerColor } from './types/PlayerColor'
 import { getPushDirection, shiftLine } from './utils/boardUtils'
 import DirectionModal from './components/DirectionModal'
+import ModeSelectModal from './components/ModeSelectModal'
+import type { GameMode } from './components/ModeSelectModal'
 
 const BOARD_SIZE = 6 
 
@@ -21,6 +23,16 @@ const App: React.FC = () => {
   // どちらに押し込めるかを保持
   const [canVertical, setCanVertical] = useState(true)
   const [canHorizontal, setCanHorizontal] = useState(true)
+
+  // 追加：ゲームモード関連
+  const [modeSelected, setModeSelected] = useState(false)   // 起動直後はモード未選択
+  const [mode, setMode] = useState<GameMode>('pvp')         // 'pvp' | 'cpu-easy' | ...
+  const [cpuColor, setCpuColor] = useState<PlayerColor>('white') // 例：白をCPUに
+
+  // 初回：モード選択モーダルを表示
+  useEffect(() => {
+    setModeSelected(false)
+  }, [])
 
   const placeBall = (
     row: number,
@@ -86,14 +98,57 @@ const App: React.FC = () => {
     setPendingPos(null)
   }
 
+  // 追加：モード選択ハンドラ
+  const handleSelectMode = (m: GameMode) => {
+      setMode(m)
+      setModeSelected(true)
+      // 新規ゲームにリセット
+      setBoard(createEmptyBoard(BOARD_SIZE))
+      setCurrentPlayer('black')
+      setCpuColor('white') // 必要なら m に応じて変えてもOK
+    }
+  
+    // 追加：CPUの手番ならAPIで1手取得して自動で置く（初級のみ）
+    useEffect(() => {
+      const isVsCPU = mode !== 'pvp'
+      const isCpuTurn = isVsCPU && currentPlayer === cpuColor
+      if (!isCpuTurn) return
+  
+      // 中級/上級はまだ準備中！
+      if (mode === 'cpu-medium' || mode === 'cpu-hard') return
+  
+      const think = async () => {
+        try {
+          const res = await fetch('/cpu/move', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ board, currentPlayer }),
+          })
+          const data = (await res.json()) as { row: number; col: number }
+          // 人間と同じ入口処理で配置
+          handlePlace(data.row, data.col)
+        } catch (e) {
+          console.error('CPU呼び出し失敗', e)
+        }
+      }
+      think()
+    }, [mode, board, currentPlayer, cpuColor])
+
   return (
     <div className="App" style={{ padding: '20px', textAlign: 'center' }}>
       <h1>Penta🪼roll</h1>
+      {/* モード未選択ならモード選択モーダルを表示 */}
+      {!modeSelected && <ModeSelectModal onSelect={handleSelectMode} />}
       <Board
         size={BOARD_SIZE}
         board={board}
         currentPlayer={currentPlayer}
-        onPlace={handlePlace}
+        onPlace={(r, c) => {
+          const isVsCPU = mode !== 'pvp'
+          const isCpuTurn = isVsCPU && currentPlayer === cpuColor
+          if (isCpuTurn) return // CPUの手番は人間クリック無効
+          handlePlace(r, c)
+        }}
       />
       {showModal && (
         <DirectionModal
