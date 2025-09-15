@@ -1,4 +1,4 @@
-# 🩷ྀི🪼ྀི🩵ྀིペンタロール🩷ྀི🪼ྀི🩵ྀི
+# 🩷ྀི🪼ྀི🩵ྀིペンタロール🩵ྀི🪼ྀི🩷ྀི
 さまぁ〜ずチャンネルで紹介されていたペンタロールを作る<br>
 https://youtu.be/B47Ptdt7M9M?si=KEYjF2hCA2DH73BX&t=70
 
@@ -83,6 +83,6 @@ npm insatall
 ```bash
 npm run dev
 ```
-軌道に成功すると、http://localhost:5173/でゲーム画面が開きます。
+軌道に成功すると、http://localhost:5173 で ゲーム画面が開きます。
 
 
