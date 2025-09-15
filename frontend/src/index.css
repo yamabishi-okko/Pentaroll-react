@@ -66,3 +66,28 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+.cell-last-glow {
+  /* 背景はそのまま、枠だけグラデ化するテクニック */
+  background:
+    linear-gradient(var(--cell-bg, #eaeaea), var(--cell-bg, #eaeaea)) padding-box,
+    linear-gradient(45deg, #00cfff, #4facfe) border-box;
+  /* 枠を少し光らせる */
+  box-shadow:
+    0 0 10px 3px rgba(0, 200, 255, 0.55),
+    inset 0 0 6px 2px rgba(0, 160, 255, 0.35);
+  animation: jelly-glow 1.8s ease-in-out infinite;
+}
+
+@keyframes jelly-glow {
+  0%, 100% {
+    box-shadow:
+      0 0 8px 2px rgba(0, 200, 255, 0.45),
+      inset 0 0 4px 1px rgba(0, 160, 255, 0.28);
+  }
+  50% {
+  box-shadow:
+    0 0 14px 4px rgba(0, 220, 255, 0.75),
+    inset 0 0 8px 3px rgba(0, 180, 255, 0.45);
+  }
+}

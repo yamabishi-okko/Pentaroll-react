@@ -9,9 +9,10 @@ interface BoardProps {
   board: BoardState
   currentPlayer: PlayerColor
   onPlace: (row: number, col: number) => void
+  lastMove?: { r: number; c: number } | null
 }
 
-const Board: React.FC<BoardProps> = ({ size, board, onPlace }) => {
+const Board: React.FC<BoardProps> = ({ size, board, onPlace, lastMove }) => {
   // その行が満杯か？
   const isRowFull = (r: number) => board[r].every(cell => cell !== null)
   // その列が満杯か？
@@ -62,6 +63,7 @@ const Board: React.FC<BoardProps> = ({ size, board, onPlace }) => {
               key={`${r}-${c}`}
               value={cellValue}
               isEdge={edge}
+              isLast={!!lastMove && lastMove.r === r && lastMove.c === c}
               onClick={() => {
                 if (clickable) onPlace(r, c)
               }}
