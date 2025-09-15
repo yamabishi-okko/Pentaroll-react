@@ -13,7 +13,7 @@ https://youtu.be/B47Ptdt7M9M?si=KEYjF2hCA2DH73BX&t=70
 フロントエンド言語<br>
 ・TypeScript<br>
 バックエンド関連<br>
-・現状なし
+・CPU対戦モード実装予定（Python使用）
 
 
 
@@ -28,5 +28,12 @@ https://youtu.be/B47Ptdt7M9M?si=KEYjF2hCA2DH73BX&t=70
 
 
 # ⚓️起動方法
+flontendフォルダに移動します。
+>cd Pentaroll-react/frontend
+
+パッケージ依存関連インストール
+>npm insatall
+
+開発環境起動
 >npm run dev<br>
 http://localhost:5173/<br>
