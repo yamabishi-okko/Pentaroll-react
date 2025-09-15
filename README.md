@@ -1,4 +1,4 @@
-# 🪼ペンタロール
+# 🩷ྀི🪼ྀི🩵ྀིペンタロール🩷ྀི🪼ྀི🩵ྀི
 さまぁ〜ずチャンネルで紹介されていたペンタロールを作る<br>
 https://youtu.be/B47Ptdt7M9M?si=KEYjF2hCA2DH73BX&t=70
 
@@ -8,12 +8,20 @@ https://youtu.be/B47Ptdt7M9M?si=KEYjF2hCA2DH73BX&t=70
 すでにボールがある箇所にも押し込んで入れることができる（6個あるときは押しこみ不可）
 
 # 🧸使用技術
->フロントエンドフレームワーク<br>
-・React + Vite<br>
-フロントエンド言語<br>
-・TypeScript<br>
-バックエンド関連<br>
-・CPU対戦モード実装予定（Python使用）
+- フロントエンドフレームワーク<br>
+React + Vite<br>
+- フロントエンド言語<br>
+TypeScript<br>
+- バックエンド関連<br>
+CPU対戦モードでPython使用<br>
+
+# 👻開発環境
+- OS: MacBook Pro Sonoma 14.3<br>
+- CPU: Apple M3 Pro / メモリ 36GB<br>
+- Node.js: v23.10.0<br>
+- npm: 10.9.2<br>
+- Python: 3.13.2<br>
+
 
 
 
@@ -28,12 +36,53 @@ https://youtu.be/B47Ptdt7M9M?si=KEYjF2hCA2DH73BX&t=70
 
 
 # ⚓️起動方法
-flontendフォルダに移動します。
->cd Pentaroll-react/frontend
+## 🪼Pythonサーバー立ち上げる
+AIモードを使う場合は、フロントエンドとは別に Python サーバを起動します。  
+※ 開発中はターミナルを2つ使い、片方で Python、もう片方でフロントを起動してください。
 
-パッケージ依存関連インストール
->npm insatall
+### 必要条件
+>- Python 3.10+（3.11 推奨）
+>- pip
 
-開発環境起動
->npm run dev<br>
-http://localhost:5173/<br>
+#### 1) ディレクトリに移動
+```bash
+cd Pentaroll-react/cpu-python
+```
+#### 2) 依存インストール＆起動
+##### macOS / Linux
+```bash
+python3 -m venv .venv　 　　 # ① プロジェクト専用の仮想環境を作る
+source .venv/bin/activate　　# ② その仮想環境を有効化する（Mac/Linux）
+pip install -r requirements.txt　# ③ 依存ライブラリをインストール（fastapi/uvicorn/pydantic）
+uvicorn main:app --reload --port 8001　# ④ 開発サーバ起動（/move エンドポイントが立つ）
+```
+
+##### Windows (PowerShell)
+```bash
+py -m venv .venv
+.\.venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+uvicorn main:app --reload --port 8001　
+```
+起動に成功すると、http://127.0.0.1:8001 で FastAPI が動きます。
+
+
+## 🪼フロントエンドを立ち上げる
+
+#### 1) flontendフォルダに移動します。
+```bash
+cd Pentaroll-react/frontend
+```
+
+#### 2) パッケージ依存関連インストール
+```bash
+npm insatall
+```
+
+#### 3) 開発環境起動
+```bash
+npm run dev
+```
+軌道に成功すると、http://localhost:5173/でゲーム画面が開きます。
+
+
