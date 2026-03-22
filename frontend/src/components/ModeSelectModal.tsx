@@ -71,16 +71,11 @@ const ModeSelectModal: React.FC<ModeSelectModalProps> = ({ onSelect }) => {
             AI対戦（初級）
           </button>
 
-          {/* 中級・上級は準備中：グレー＆押せない */}
-          <button
-            style={btnDisabled}
-            disabled
-            aria-disabled="true"
-            title="準備中"
-          >
+          <button style={btn} onClick={() => onSelect('cpu-medium')}>
             AI対戦（中級）
           </button>
 
+          {/* 上級は準備中：グレー＆押せない */}
           <button
             style={btnDisabled}
             disabled

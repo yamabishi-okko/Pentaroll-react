@@ -162,15 +162,15 @@ const App: React.FC = () => {
     if (!isCpuTurn) return
     if (winner) return
 
-    // 中級/上級はまだ準備中！
-    if (mode === 'cpu-medium' || mode === 'cpu-hard') return
+    // 上級はまだ準備中！
+    if (mode === 'cpu-hard') return
 
     const think = async () => {
       try {
         const res = await fetch('/cpu/move', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ board, currentPlayer }),
+          body: JSON.stringify({ board, currentPlayer, mode }),
         })
         const data = (await res.json()) as { row: number; col: number }
        // CPUは角でもモーダルを出さない
